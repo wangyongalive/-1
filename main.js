@@ -3,6 +3,9 @@ import "./styles/global.scss";
 // 导入所有的过滤器 并重命名为filters
 import * as filters from "./filters";
 
+// 文章详情样式
+import "./styles/article-detail.scss";
+
 // #ifndef VUE3
 import Vue from "vue";
 import App from "./App";

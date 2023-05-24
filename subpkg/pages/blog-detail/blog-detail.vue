@@ -1,6 +1,8 @@
 <template>
   <!-- 浏览器中无法使用html标签 -->
+  <!-- #ifndef H5 -->
   <page-meta root-font-size="52px">
+    <!-- #endif -->
     <view class="detail-container">
       <!-- 文章内容区域 -->
       <block v-if="articleData">
@@ -10,10 +12,7 @@
           <view class="detail-left">
             <view class="avatar-box">
               <!-- 头像 -->
-              <image
-                class="avatar"
-                :src="articleData.avatar"
-              ></image>
+              <image class="avatar" :src="articleData.avatar"></image>
             </view>
             <view class="author-box">
               <!-- 作者 -->
@@ -24,56 +23,34 @@
           </view>
           <view class="detail-right">
             <!-- 关注按钮 -->
-            <button
-              class="follow"
-              size="mini"
-              :type="articleData.isFollow ? 'primary' : 'default'"
-              :loading="isFollowLoading"
-              @click="onFollowClick"
-            > {{ articleData.isFollow ? '已关注' : '关注' }}</button>
+            <button class="follow" size="mini" :type="articleData.isFollow ? 'primary' : 'default'"
+              :loading="isFollowLoading" @click="onFollowClick"> {{ articleData.isFollow ? '已关注' : '关注' }}</button>
           </view>
         </view>
         <!-- 文章内容 -->
         <!-- <rich-text :nodes="articleData.content"></rich-text> -->
-        <mp-html
-          class="markdown_views"
-          :content="addClassFromHTML(articleData.content)"
-          scroll-table
-        />
+        <mp-html class="markdown_views" :content="addClassFromHTML(articleData.content)" scroll-table />
 
         <!-- 评论列表 -->
         <view class="comment-box">
           <!-- 1. 给 mescroll-body 的组件添加：ref="mescrollItem"（mescrollItem 是固定的不可以变化） -->
-          <article-comment-list
-            ref="mescrollItem"
-            :articleId="articleId"
-          ></article-comment-list>
+          <article-comment-list ref="mescrollItem" :articleId="articleId"></article-comment-list>
         </view>
 
         <!-- 底部功能区 -->
-        <article-operate
-          @commitClick="onCommit"
-          :articleData="articleData"
-          @changePraise="onChangePraise"
-          @changeCollect="onChangeCollect"
-        />
+        <article-operate @commitClick="onCommit" :articleData="articleData" @changePraise="onChangePraise"
+          @changeCollect="onChangeCollect" />
         <!-- 输入评论的popup -->
-        <uni-popup
-          ref="popup"
-          type="bottom"
-          @change="onCommitPopupChange"
-        >
-          <article-comment-commit
-            v-if="isShowCommit"
-            :articleId="articleId"
-            @success="onSendSuccess"
-          />
+        <uni-popup ref="popup" type="bottom" @change="onCommitPopupChange">
+          <article-comment-commit v-if="isShowCommit" :articleId="articleId" @success="onSendSuccess" />
         </uni-popup>
 
       </block>
 
     </view>
+    <!-- #ifndef H5 -->
   </page-meta>
+  <!-- #endif -->
 </template>
 
 <script>
@@ -232,14 +209,17 @@ export default {
 
 
 <style lang="scss" scoped>
+// @import '~@/styles/article-detail.scss';
 .detail-container {
   padding: $uni-spacing-col-base $uni-spacing-row-base;
   padding-bottom: 108px;
+
   .title {
     font-size: $uni-font-size-title;
     color: $uni-text-color-title;
     font-weight: bold;
   }
+
   .detail-info {
     padding: $uni-spacing-col-base 0;
     display: flex;
@@ -247,15 +227,18 @@ export default {
 
     .detail-left {
       display: flex;
+
       .author-box {
         margin-left: $uni-spacing-row-base;
         display: flex;
         flex-direction: column;
+
         .author {
           font-size: $uni-font-size-base;
           font-weight: bolder;
           color: $uni-color-title;
         }
+
         .release-time {
           font-size: $uni-font-size-sm;
           color: $uni-text-color-grey;

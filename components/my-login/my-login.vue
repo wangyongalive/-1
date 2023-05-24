@@ -2,31 +2,20 @@
   <view class="my-container">
     <!-- 用户未登录 -->
     <block v-if="!token">
-      <image
-        class="avatar avatar-img"
-        src="/static/images/default-avatar.png"
-        mode="scaleToFill"
-      />
+      <image class="avatar avatar-img" src="/static/images/default-avatar.png" mode="scaleToFill" />
       <view class="login-desc">登录后可同步数据</view>
-      <button
-        class="login-btn"
-        type="primary"
-        @click="getUserInfo"
-      >微信用户一键登录</button>
+      <!-- #ifdef MP-WEIXIN -->
+      <button class="login-btn" type="primary" @click="getUserInfo">微信用户一键登录</button>
+      <!-- #endif -->
+      <!-- #ifndef MP-WEIXIN -->
+      <button class="login-btn" type="primary" @click="onAutoLogin">一键登录</button>
+      <!-- #endif -->
     </block>
     <!-- 已登录 -->
     <block v-else>
-      <image
-        class="avatar avatar-img"
-        :src="userInfo.avatarUrl"
-        mode="scaleToFill"
-      />
+      <image class="avatar avatar-img" :src="userInfo.avatarUrl" mode="scaleToFill" />
       <view class="login-desc">{{ userInfo.nickName }}</view>
-      <button
-        class="login-btn"
-        type="default"
-        @click="onLogoutClick"
-      >退出登录</button>
+      <button class="login-btn" type="default" @click="onLogoutClick">退出登录</button>
     </block>
   </view>
 </template>
@@ -69,6 +58,27 @@ export default {
       });
     },
     /**
+     * 一键登录
+     */
+    async onAutoLogin() {
+      // 展示加载框
+      uni.showLoading({
+        title: '加载中'
+      });
+      await this.login({
+        encryptedData: 'BmGEMqpGI5w',
+        errMsg: 'getUserProfile:ok',
+        iv: 'c+NbINO4CuEWCBYGG2FxWw==',
+        rawData:
+          '{"nickName":"小慕同学","gender":1,"language":"zh_CN","city":"","province":"","country":"China","avatarUrl":"https://m.imooc.com/static/wap/static/common/img/logo-small@2x.png"}',
+        signature: '449a10f11998daf680fe546a5176e6e2973516ce',
+        userInfo: { nickName: '小慕同学', gender: 1, language: 'zh_CN', city: '', province: '' }
+      });
+      this.$emit('onLoginSuccess');
+      // 隐藏loading
+      uni.hideLoading();
+    },
+    /**
      * 退出登录
      */
     onLogoutClick() {
@@ -91,16 +101,19 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 25%;
+  padding-top: 25%; // 父元素的宽度
+
   .avatar-img {
     width: 78px;
     height: 78px;
   }
+
   .login-desc {
     color: $uni-text-color-grey;
     font-size: $uni-font-size-base;
     margin-top: $uni-spacing-col-big;
   }
+
   .login-btn {
     margin-top: $uni-spacing-col-big;
     width: 85%;

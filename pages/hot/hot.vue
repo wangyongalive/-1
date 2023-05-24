@@ -1,25 +1,14 @@
 <template>
   <view class="hot-container">
     <!-- logo -->
-    <image
-      class="logo"
-      mode="aspectFit"
-      src="@/static/images/logo.png"
-    />
-    <view
-      class="search-box"
-      @click.stop="onToSearch"
-    >
+    <image class="logo" mode="aspectFit" src="@/static/images/logo.png" />
+    <view class="search-box" @click.stop="onToSearch">
       <!-- 搜索模块 可直接使用 无需注册-->
       <my-search placeholderText="uniapp 自定义组件" />
     </view>
     <view class="tab-sticky">
-      <my-tabs
-        :tabData="tabData"
-        :defaultIndex="currentIndex"
-        :config="{ textColor: '#333333' }"
-        @tabClick="tabClick"
-      ></my-tabs>
+      <my-tabs :tabData="tabData" :defaultIndex="currentIndex" :config="{ textColor: '#333333' }"
+        @tabClick="tabClick"></my-tabs>
     </view>
     <!-- 
       List 组件
@@ -31,35 +20,17 @@
       完成 swiper 和 tabs 的联动效果 
     -->
     <!-- current指定显示哪一屏 -->
-    <swiper
-      class="swiper"
-      :current="currentIndex"
-      :style="{height:currentSwiperHeight + 'px'}"
-      @animationfinish="onSwiperEnd"
-      @change="onSwiperChange"
-    >
+    <swiper class="swiper" :current="currentIndex" :style="{ height: currentSwiperHeight + 'px' }"
+      @animationfinish="onSwiperEnd" @change="onSwiperChange">
       <!-- tabData决定swiper-item的数量 -->
-      <swiper-item
-        class="swiper-item"
-        v-for="(tabItem, tabIndex) in tabData"
-        :key="tabIndex"
-      >
+      <swiper-item class="swiper-item" v-for="(tabItem, tabIndex) in tabData" :key="tabIndex">
         <view>
           <!-- 加载动画 -->
-          <uni-load-more
-            status="loading"
-            v-if="isLoading"
-          />
+          <uni-load-more status="loading" v-if="isLoading" />
           <!-- 列表 -->
           <block v-else>
-            <hot-list-item
-              :class="'hot-list-item-' + tabIndex"
-              v-for="(item, index) in listData[tabIndex]"
-              :key="index"
-              :data="item"
-              :ranking="index + 1"
-              @click="onItemClick(item)"
-            ></hot-list-item>
+            <hot-list-item :class="'hot-list-item-' + tabIndex" v-for="(item, index) in listData[tabIndex]" :key="index"
+              :data="item" :ranking="index + 1" @click="onItemClick(item)"></hot-list-item>
           </block>
         </view>
       </swiper-item>
@@ -218,7 +189,13 @@ export default {
     position: -webkit-sticky;
     position: sticky;
     z-index: 99;
+    /* #ifndef H5 */
     top: 0;
+    /* #endif */
+    /* #ifdef H5 */
+    top: 44px;
+    /* #endif */
+
   }
 
   .swiper {

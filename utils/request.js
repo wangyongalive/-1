@@ -7,7 +7,7 @@ function request({ url, data, method }) {
   return new Promise((resolve, reject) => {
     uni.request({
       header: {
-        Authorization: store.state.user.token,
+        Authorization: store.state.user.token, /// 添加请求头
       },
       url: `${BASE_URL}${url}`,
       data,
